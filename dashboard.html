@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Feria de Seguridad</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-body">
+
+  <div class="dashboard-page">
+
+    <header class="dashboard-header">
+      <div class="dashboard-header-left">
+        <img src="logo.png" alt="logo" class="dashboard-logo">
+        <div>
+          <h1 class="dashboard-title">Dashboard de Evaluaciones</h1>
+          <p class="dashboard-subtitle">Monitoreo en tiempo real de participación y estados detectados</p>
+        </div>
+      </div>
+
+      <div class="dashboard-header-right">
+        <button class="btn-accion" onclick="cargarDashboard()">Actualizar ahora</button>
+        <p id="ultimaActualizacion" class="ultima-actualizacion">Última actualización: -</p>
+      </div>
+    </header>
+
+    <section class="dashboard-metricas">
+      <div class="card-metrica horizontal">
+        <h3>Total evaluaciones</h3>
+        <p id="totalEvaluaciones">0</p>
+      </div>
+
+      <div class="card-metrica horizontal">
+        <h3>Apto</h3>
+        <p id="totalApto">0</p>
+      </div>
+
+      <div class="card-metrica horizontal">
+        <h3>Observado</h3>
+        <p id="totalObservado">0</p>
+      </div>
+
+      <div class="card-metrica horizontal">
+        <h3>Alerta</h3>
+        <p id="totalAlerta">0</p>
+      </div>
+
+      <div class="card-metrica horizontal">
+        <h3>No Apto</h3>
+        <p id="totalNoApto">0</p>
+      </div>
+    </section>
+
+    <section class="dashboard-main">
+      <div class="grafico-card dashboard-panel">
+        <h2>Distribución por estado</h2>
+
+        <div class="barra-item">
+          <div class="barra-label">Apto</div>
+          <div class="barra-fondo">
+            <div id="barraApto" class="barra-valor verde-bg" style="width:0%;">0</div>
+          </div>
+        </div>
+
+        <div class="barra-item">
+          <div class="barra-label">Observado</div>
+          <div class="barra-fondo">
+            <div id="barraObservado" class="barra-valor amarillo-bg" style="width:0%;">0</div>
+          </div>
+        </div>
+
+        <div class="barra-item">
+          <div class="barra-label">Alerta</div>
+          <div class="barra-fondo">
+            <div id="barraAlerta" class="barra-valor naranja-bg" style="width:0%;">0</div>
+          </div>
+        </div>
+
+        <div class="barra-item">
+          <div class="barra-label">No Apto</div>
+          <div class="barra-fondo">
+            <div id="barraNoApto" class="barra-valor rojo-bg" style="width:0%;">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tabla-card dashboard-panel">
+        <h2>Últimas evaluaciones</h2>
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha local</th>
+                <th>Estado</th>
+                <th>Color</th>
+                <th>Total Sí</th>
+              </tr>
+            </thead>
+            <tbody id="tablaEvaluaciones">
+              <tr>
+                <td colspan="4">Cargando datos...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
