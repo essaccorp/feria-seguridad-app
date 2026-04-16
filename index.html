@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluación de Seguridad</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+ <img src="logo.png" alt="logo" class="logo">
+
+    <h1>¿Cómo te sientes hoy?</h1>
+
+    <div id="pantalla-preguntas">
+  <div id="preguntas"></div>
+  <button id="btnResultado" onclick="calcularResultado()">Ver resultado</button>
+</div>
+
+<div id="pantalla-resultado" style="display:none;"></div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
