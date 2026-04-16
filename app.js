@@ -225,7 +225,8 @@ async function calcularResultado() {
 
   setTimeout(() => {
     document.getElementById("pantalla-preguntas").style.display = "none";
-    document.getElementById("pantalla-resultado").style.display = "block";
+document.getElementById("pantalla-resultado").style.display = "block";
+window.scrollTo({ top: 0, behavior: "smooth" });
 
     document.getElementById("pantalla-resultado").innerHTML = `
       <div class="resultado-card">
@@ -266,4 +267,6 @@ function finalizarEncuesta() {
       <button class="btn-accion" onclick="location.reload()">Volver al inicio</button>
     </div>
   `;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
