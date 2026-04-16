@@ -72,5 +72,5 @@ async function cargarDashboard() {
 
 cargarDashboard();
 
-// Actualización automática cada 3 segundos
-setInterval(cargarDashboard, 3000);
+// Actualización automática cada 10 segundos
+setInterval(cargarDashboard, 10000);
