@@ -141,13 +141,13 @@ async function calcularResultado() {
   let color = "";
   let interpretacion = "";
   let recomendaciones = [];
-  let imagenEstado = "";
+  let nivelEnergia = 0;
 
   if (totalSi <= 1) {
     estado = "Apto";
     color = "verde";
     interpretacion = "Energía positiva y enfoque total.";
-    imagenEstado = "img/bateria-verde.png";
+    nivelEnergia = 90;
     recomendaciones = [
       "Usa tu enfoque para detectar fallas mínimas en tus equipos de actividades críticas como arnés y equipos de seguridad en espacios confinados.",
       "Respeta estrictamente las distancias de seguridad y el etiquetado de cada producto químico.",
@@ -157,7 +157,7 @@ async function calcularResultado() {
     estado = "Observado";
     color = "amarillo";
     interpretacion = "Equilibrio frágil. Precaución.";
-    imagenEstado = "img/bateria-amarillo.png";
+    nivelEnergia = 65;
     recomendaciones = [
       "Detente 3 minutos antes de iniciar para repasar mentalmente cada paso de tu procedimiento.",
       "Bebe un vaso de agua ahora para mejorar tu claridad mental y reducir la fatiga ligera.",
@@ -167,7 +167,7 @@ async function calcularResultado() {
     estado = "Alerta";
     color = "naranja";
     interpretacion = "Fatiga/Estrés evidente. Capacidad reducida.";
-    imagenEstado = "img/bateria-naranja.png";
+    nivelEnergia = 40;
     recomendaciones = [
       "Toma un descanso de 10 a 15 minutos fuera del área crítica para estirar y recuperar el enfoque.",
       "No inicies ninguna maniobra en altura o actividad crítica sin que un supervisor verifique tu seguridad.",
@@ -178,7 +178,7 @@ async function calcularResultado() {
     estado = "No Apto";
     color = "rojo";
     interpretacion = "Riesgo Psicosocial Crítico. Pare inmediato.";
-    imagenEstado = "img/bateria-rojo.png";
+    nivelEnergia = 15;
     recomendaciones = [
       "Detén la tarea de alto riesgo de inmediato; tu estado actual es una condición insegura.",
       "Comunica a tu supervisor tu estado para gestionar una reubicación temporal a tareas administrativas.",
@@ -195,21 +195,21 @@ async function calcularResultado() {
   }));
 
   const registro = {
-  preguntas: JSON.stringify(preguntasSeleccionadas),
-  respuestas: JSON.stringify(detalleRespuestas),
-  total_si: totalSi,
-  estado: estado,
-  color: color,
-  recomendacion: recomendaciones.join(" | "),
-  fecha_local: new Date().toLocaleString("es-PE", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  })
-};
+    preguntas: JSON.stringify(preguntasSeleccionadas),
+    respuestas: JSON.stringify(detalleRespuestas),
+    total_si: totalSi,
+    estado: estado,
+    color: color,
+    recomendacion: recomendaciones.join(" | "),
+    fecha_local: new Date().toLocaleString("es-PE", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    })
+  };
 
   const resultadoGuardado = await guardarEvaluacion(registro);
 
@@ -225,12 +225,18 @@ async function calcularResultado() {
 
   setTimeout(() => {
     document.getElementById("pantalla-preguntas").style.display = "none";
-document.getElementById("pantalla-resultado").style.display = "block";
-window.scrollTo({ top: 0, behavior: "smooth" });
+    document.getElementById("pantalla-resultado").style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     document.getElementById("pantalla-resultado").innerHTML = `
       <div class="resultado-card">
-        <img src="${imagenEstado}" alt="${estado}" class="estado-img">
+        <div class="bateria-wrap">
+          <div class="bateria ${color}">
+            <div class="bateria-terminal"></div>
+            <div class="bateria-nivel ${color}" style="width: 0%;" data-width="${nivelEnergia}%"></div>
+          </div>
+          <div class="bateria-porcentaje ${color}">${nivelEnergia}%</div>
+        </div>
 
         <div class="estado-texto ${color}">${estado}</div>
 
@@ -248,6 +254,13 @@ window.scrollTo({ top: 0, behavior: "smooth" });
         </div>
       </div>
     `;
+
+    setTimeout(() => {
+      const nivel = document.querySelector(".bateria-nivel");
+      if (nivel) {
+        nivel.style.width = nivel.dataset.width;
+      }
+    }, 100);
   }, 500);
 }
 

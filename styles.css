@@ -491,3 +491,86 @@ th {
     font-size: 14px;
   }
 }
+
+/* ===== BATERÍA ANIMADA ===== */
+
+.bateria-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0 20px;
+}
+
+.bateria {
+  position: relative;
+  width: 240px;
+  height: 110px;
+  border: 6px solid #1f2937;
+  border-radius: 18px;
+  background: #f3f4f6;
+  overflow: visible;
+  box-shadow: inset 0 0 0 4px rgba(255,255,255,0.35);
+}
+
+.bateria-terminal {
+  position: absolute;
+  right: -18px;
+  top: 34px;
+  width: 14px;
+  height: 34px;
+  background: #1f2937;
+  border-radius: 0 8px 8px 0;
+}
+
+.bateria-nivel {
+  height: 100%;
+  width: 0%;
+  border-radius: 10px;
+  transition: width 1.4s ease-in-out;
+  position: relative;
+}
+
+.bateria-nivel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.15) 0%,
+    rgba(255,255,255,0.35) 35%,
+    rgba(255,255,255,0.08) 70%,
+    rgba(255,255,255,0.15) 100%
+  );
+  animation: brilloBateria 2.2s infinite linear;
+}
+
+.bateria-porcentaje {
+  margin-top: 14px;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.bateria-nivel.verde {
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+}
+
+.bateria-nivel.amarillo {
+  background: linear-gradient(90deg, #d97706, #f59e0b);
+}
+
+.bateria-nivel.naranja {
+  background: linear-gradient(90deg, #ea580c, #f97316);
+}
+
+.bateria-nivel.rojo {
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+}
+
+@keyframes brilloBateria {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
