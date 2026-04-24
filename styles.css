@@ -574,3 +574,23 @@ th {
     transform: translateX(120%);
   }
 }
+
+.resultado-verde {
+  background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 70%);
+  border: 2px solid rgba(22, 163, 74, 0.25);
+}
+
+.resultado-amarillo {
+  background: linear-gradient(180deg, #fffbeb 0%, #ffffff 70%);
+  border: 2px solid rgba(217, 119, 6, 0.25);
+}
+
+.resultado-naranja {
+  background: linear-gradient(180deg, #fff7ed 0%, #ffffff 70%);
+  border: 2px solid rgba(249, 115, 22, 0.25);
+}
+
+.resultado-rojo {
+  background: linear-gradient(180deg, #fef2f2 0%, #ffffff 70%);
+  border: 2px solid rgba(220, 38, 38, 0.25);
+}

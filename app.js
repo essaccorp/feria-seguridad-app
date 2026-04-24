@@ -143,21 +143,27 @@ async function calcularResultado() {
   let recomendaciones = [];
   let nivelEnergia = 0;
 
+  // 🔋 Nivel de energía
+  if (totalSi === 0) nivelEnergia = 100;
+  else if (totalSi === 1) nivelEnergia = 85;
+  else if (totalSi === 2) nivelEnergia = 65;
+  else if (totalSi === 3) nivelEnergia = 40;
+  else if (totalSi === 4) nivelEnergia = 20;
+  else nivelEnergia = 5;
+
   if (totalSi <= 1) {
     estado = "Apto";
     color = "verde";
     interpretacion = "Energía positiva y enfoque total.";
-    nivelEnergia = 90;
     recomendaciones = [
       "Usa tu enfoque para detectar fallas mínimas en tus equipos de actividades críticas como arnés y equipos de seguridad en espacios confinados.",
       "Respeta estrictamente las distancias de seguridad y el etiquetado de cada producto químico.",
       "Aprovecha tu tranquilidad para trabajar a un ritmo constante, sin correr ni confiarte de más."
     ];
   } else if (totalSi === 2) {
-    estado = "Observado";
+    estado = "Realiza una pausa de enfoque";
     color = "amarillo";
     interpretacion = "Equilibrio frágil. Precaución.";
-    nivelEnergia = 65;
     recomendaciones = [
       "Detente 3 minutos antes de iniciar para repasar mentalmente cada paso de tu procedimiento.",
       "Bebe un vaso de agua ahora para mejorar tu claridad mental y reducir la fatiga ligera.",
@@ -167,7 +173,6 @@ async function calcularResultado() {
     estado = "Alerta";
     color = "naranja";
     interpretacion = "Fatiga/Estrés evidente. Capacidad reducida.";
-    nivelEnergia = 40;
     recomendaciones = [
       "Toma un descanso de 10 a 15 minutos fuera del área crítica para estirar y recuperar el enfoque.",
       "No inicies ninguna maniobra en altura o actividad crítica sin que un supervisor verifique tu seguridad.",
@@ -175,14 +180,13 @@ async function calcularResultado() {
       "Concéntrate exclusivamente en una sola acción a la vez para evitar errores operativos por saturación."
     ];
   } else {
-    estado = "No Apto";
+    estado = "Pare de inmediato";
     color = "rojo";
-    interpretacion = "Riesgo Psicosocial Crítico. Pare inmediato.";
-    nivelEnergia = 15;
+    interpretacion = "Riesgo Psicosocial Crítico.";
     recomendaciones = [
       "Detén la tarea de alto riesgo de inmediato; tu estado actual es una condición insegura.",
       "Comunica a tu supervisor tu estado para gestionar una reubicación temporal a tareas administrativas.",
-      "No utilices arnés ni ingreses a tanques; el estrés crítico anula tu capacidad de respuesta ante emergencias.",
+      "Se recomienda hacer una pausa y no realizar tareas críticas; el estrés puede anular tu capacidad de respuesta ante emergencias.",
       "Busca al personal de bienestar o salud ocupacional para conversar sobre la carga que te está afectando."
     ];
   }
@@ -229,7 +233,7 @@ async function calcularResultado() {
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     document.getElementById("pantalla-resultado").innerHTML = `
-      <div class="resultado-card">
+      <div class="resultado-card resultado-${color}">
         <div class="bateria-wrap">
           <div class="bateria ${color}">
             <div class="bateria-terminal"></div>
@@ -241,8 +245,6 @@ async function calcularResultado() {
         <div class="estado-texto ${color}">${estado}</div>
 
         <div class="interpretacion">${interpretacion}</div>
-
-        <div class="total-si"><strong>Total de respuestas Sí:</strong> ${totalSi}</div>
 
         <ul class="recomendaciones">
           ${listaHTML}
@@ -263,6 +265,8 @@ async function calcularResultado() {
     }, 100);
   }, 500);
 }
+
+
 
 // 🔹 PANTALLA FINAL
 function finalizarEncuesta() {
