@@ -5,7 +5,9 @@ const SUPABASE_KEY = "sb_publishable_3lpTTou4N9H6pH0TBAbdeQ_FUbJEf8P";
 // 🔹 CLIENTE SUPABASE
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// 🔹 BANCO DE PREGUNTAS (10)
+let empresaSeleccionada = "";
+let operacionSeleccionada = "";
+
 const bancoPreguntas = [
   "¿Has dormido menos de 6 horas o sientes pesadez en los ojos?",
   "¿Te sientes hoy más lento de lo habitual para reaccionar ante un aviso?",
@@ -19,38 +21,96 @@ const bancoPreguntas = [
   "¿Te irrita que te corrijan o te den instrucciones adicionales hoy?"
 ];
 
-// 🔹 TOMAR 5 PREGUNTAS AL AZAR
+let preguntasSeleccionadas = [];
+let respuestas = [];
+let enviandoResultado = false;
+
+function cambiarEmpresa() {
+  const empresa = document.getElementById("empresaSelect").value;
+  const operacionSelect = document.getElementById("operacionSelect");
+  const otraEmpresa = document.getElementById("otraEmpresa");
+
+  operacionSelect.style.display = empresa === "ESSAC" ? "block" : "none";
+  otraEmpresa.style.display = empresa === "OTRAS" ? "block" : "none";
+
+  otraEmpresa.value = "";
+  operacionSelect.value = "";
+}
+
+document.addEventListener("input", function (e) {
+  if (e.target.id === "otraEmpresa") {
+    e.target.value = e.target.value.toUpperCase();
+  }
+});
+
+function continuarAPreguntas() {
+  const empresa = document.getElementById("empresaSelect").value;
+
+  if (!empresa) {
+    alert("Selecciona tu empresa.");
+    return;
+  }
+
+  if (empresa === "ESSAC") {
+    const operacion = document.getElementById("operacionSelect").value;
+
+    if (!operacion) {
+      alert("Selecciona la operación.");
+      return;
+    }
+
+    empresaSeleccionada = "ESSAC";
+    operacionSeleccionada = operacion;
+  }
+
+  if (empresa === "OTRAS") {
+    const otraEmpresa = document.getElementById("otraEmpresa").value.trim();
+
+    if (!otraEmpresa) {
+      alert("Escribe el nombre de tu empresa.");
+      return;
+    }
+
+    empresaSeleccionada = otraEmpresa.toUpperCase();
+    operacionSeleccionada = "EXTERNO";
+  }
+
+  document.getElementById("pantalla-inicio").style.display = "none";
+  document.getElementById("pantalla-preguntas").style.display = "block";
+
+  iniciarPreguntas();
+}
+
 function obtenerPreguntas() {
   return [...bancoPreguntas]
     .sort(() => 0.5 - Math.random())
     .slice(0, 5);
 }
 
-let preguntasSeleccionadas = obtenerPreguntas();
-let respuestas = new Array(5).fill(null);
-let enviandoResultado = false;
+function iniciarPreguntas() {
+  preguntasSeleccionadas = obtenerPreguntas();
+  respuestas = new Array(5).fill(null);
 
-// 🔹 PINTAR PREGUNTAS
-const contenedor = document.getElementById("preguntas");
-contenedor.innerHTML = "";
+  const contenedor = document.getElementById("preguntas");
+  contenedor.innerHTML = "";
 
-preguntasSeleccionadas.forEach((pregunta, i) => {
-  const div = document.createElement("div");
-  div.className = "pregunta";
-  div.id = `pregunta-${i}`;
+  preguntasSeleccionadas.forEach((pregunta, i) => {
+    const div = document.createElement("div");
+    div.className = "pregunta";
+    div.id = `pregunta-${i}`;
 
-  div.innerHTML = `
-    <p class="texto-pregunta">${i + 1}. ${pregunta}</p>
-    <div class="grupo-botones">
-      <button type="button" class="btn-si" onclick="responder(${i}, true)">Sí</button>
-      <button type="button" class="btn-no" onclick="responder(${i}, false)">No</button>
-    </div>
-  `;
+    div.innerHTML = `
+      <p class="texto-pregunta">${i + 1}. ${pregunta}</p>
+      <div class="grupo-botones">
+        <button type="button" class="btn-si" onclick="responder(${i}, true)">Sí</button>
+        <button type="button" class="btn-no" onclick="responder(${i}, false)">No</button>
+      </div>
+    `;
 
-  contenedor.appendChild(div);
-});
+    contenedor.appendChild(div);
+  });
+}
 
-// 🔹 MARCAR RESPUESTA
 function responder(index, valor) {
   respuestas[index] = valor;
 
@@ -66,7 +126,6 @@ function responder(index, valor) {
   }
 }
 
-// 🔹 MENSAJE DE ESTADO
 function mostrarMensajeEstado(tipo, texto) {
   let caja = document.getElementById("mensaje-estado");
 
@@ -91,7 +150,6 @@ function ocultarMensajeEstado() {
   }
 }
 
-// 🔹 GUARDAR EN SUPABASE
 async function guardarEvaluacion(data) {
   try {
     const { error } = await supabaseClient
@@ -119,7 +177,13 @@ async function guardarEvaluacion(data) {
   }
 }
 
-// 🔹 CALCULAR RESULTADO
+function obtenerEtiquetaEstado(color) {
+  if (color === "verde") return "TOTALMENTE ENFOCADO";
+  if (color === "amarillo") return "TRANQUILO/NORMAL";
+  if (color === "naranja") return "CANSADO/ABRUMADO";
+  return "MUY ESTRESADO";
+}
+
 async function calcularResultado() {
   if (enviandoResultado) return;
 
@@ -143,7 +207,6 @@ async function calcularResultado() {
   let recomendaciones = [];
   let nivelEnergia = 0;
 
-  // 🔋 Nivel de energía
   if (totalSi === 0) nivelEnergia = 100;
   else if (totalSi === 1) nivelEnergia = 85;
   else if (totalSi === 2) nivelEnergia = 65;
@@ -199,6 +262,8 @@ async function calcularResultado() {
   }));
 
   const registro = {
+    empresa: empresaSeleccionada,
+    operacion: operacionSeleccionada,
     preguntas: JSON.stringify(preguntasSeleccionadas),
     respuestas: JSON.stringify(detalleRespuestas),
     total_si: totalSi,
@@ -234,6 +299,10 @@ async function calcularResultado() {
 
     document.getElementById("pantalla-resultado").innerHTML = `
       <div class="resultado-card resultado-${color}">
+        <div class="estado-superior ${color}">
+          ${obtenerEtiquetaEstado(color)}
+        </div>
+
         <div class="bateria-wrap">
           <div class="bateria ${color}">
             <div class="bateria-terminal"></div>
@@ -266,9 +335,6 @@ async function calcularResultado() {
   }, 500);
 }
 
-
-
-// 🔹 PANTALLA FINAL
 function finalizarEncuesta() {
   const logoSuperior = document.querySelector(".logo");
   const titulo = document.querySelector("h1");

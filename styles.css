@@ -594,3 +594,64 @@ th {
   background: linear-gradient(180deg, #fef2f2 0%, #ffffff 70%);
   border: 2px solid rgba(220, 38, 38, 0.25);
 }
+
+.campo-select,
+.campo-input {
+  width: 100%;
+  max-width: 360px;
+  padding: 14px 16px;
+  margin: 10px auto;
+  display: block;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  background: white;
+  color: #111827;
+}
+
+.estado-superior {
+  font-size: 28px;   /* mismo tamaño visual que "Pare de inmediato" */
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.estado-superior.verde {
+  color: #16a34a;
+}
+
+.estado-superior.amarillo {
+  color: #d97706;
+}
+
+.estado-superior.naranja {
+  color: #ea580c;
+}
+
+.estado-superior.rojo {
+  color: #dc2626;
+}
+
+.resultado-verde {
+  background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 70%);
+  border: 2px solid rgba(22, 163, 74, 0.25);
+}
+
+.resultado-amarillo {
+  background: linear-gradient(180deg, #fffbeb 0%, #ffffff 70%);
+  border: 2px solid rgba(217, 119, 6, 0.25);
+}
+
+.resultado-naranja {
+  background: linear-gradient(180deg, #fff7ed 0%, #ffffff 70%);
+  border: 2px solid rgba(249, 115, 22, 0.25);
+}
+
+.resultado-rojo {
+  background: linear-gradient(180deg, #fef2f2 0%, #ffffff 70%);
+  border: 2px solid rgba(220, 38, 38, 0.25);
+}
+

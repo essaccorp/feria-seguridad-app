@@ -8,17 +8,49 @@
 </head>
 <body>
 
- <img src="logo.png" alt="logo" class="logo">
-
+  <div id="app">
+    <img src="logo.png" alt="logo" class="logo">
     <h1>¿Cómo te sientes hoy?</h1>
 
-    <div id="pantalla-preguntas">
-  <div id="preguntas"></div>
-  <button id="btnResultado" onclick="calcularResultado()">Ver resultado</button>
-</div>
+    <div id="pantalla-inicio">
+      <div class="pregunta">
+        <p class="texto-pregunta">Selecciona tu empresa</p>
 
-<div id="pantalla-resultado" style="display:none;"></div>
+        <select id="empresaSelect" class="campo-select" onchange="cambiarEmpresa()">
+          <option value="">SELECCIONE</option>
+          <option value="ESSAC">ESSAC</option>
+          <option value="OTRAS">OTRAS</option>
+        </select>
 
+        <select id="operacionSelect" class="campo-select" style="display:none;">
+          <option value="">SELECCIONE OPERACIÓN</option>
+          <option>SAN RAFAEL – MINSUR</option>
+          <option>PUCAMARCA – MINSUR</option>
+          <option>RAURA – MINSUR</option>
+          <option>CERRO LINDO – NEXA</option>
+          <option>MINA JUSTA – MARCOBRE</option>
+          <option>CERRO VERDE</option>
+          <option>CHINALCO</option>
+          <option>PPC MALVINAS</option>
+          <option>PPC PISCO</option>
+          <option>REPSOL</option>
+          <option>FUNSUR</option>
+          <option>LAP</option>
+          <option>OFICINA CENTRAL</option>
+        </select>
+
+        <input id="otraEmpresa" class="campo-input" placeholder="ESCRIBE TU EMPRESA" style="display:none;">
+
+        <button class="btn-accion" onclick="continuarAPreguntas()">Siguiente</button>
+      </div>
+    </div>
+
+    <div id="pantalla-preguntas" style="display:none;">
+      <div id="preguntas"></div>
+      <button id="btnResultado" onclick="calcularResultado()">Ver resultado</button>
+    </div>
+
+    <div id="pantalla-resultado" style="display:none;"></div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
